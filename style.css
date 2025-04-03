@@ -1,7 +1,7 @@
 /* General Styling */
 body {
   font-family: 'Poppins', sans-serif;
-  background: #fff8f0; /* Light warm background */
+  background: #f0f8ff; /* Lighter background to complement blue */
   margin: 0;
   padding: 0;
   color: #333;
@@ -9,7 +9,7 @@ body {
 
 /* Header */
 .header {
-  background: linear-gradient(135deg, #ff7f50, #ff4500); /* Orange gradient */
+  background: linear-gradient(135deg, #007BFF, #00b0ff); /* Lighter blue gradient */
   padding: 20px 40px;
   display: flex;
   align-items: center;
@@ -19,7 +19,7 @@ body {
 }
 
 .sitename {
-  font-size: 26px;
+  font-size: 40px;
   font-weight: bold;
   color: white;
   text-decoration: none;
@@ -27,8 +27,8 @@ body {
 
 /* Checkout Button */
 .checkout-button {
-  background-color: #ffcc00; /* Bright yellow */
-  color: #222;
+  background-color: #1e90ff; /* Vivid blue */
+  color: white;
   padding: 10px 15px;
   border: none;
   border-radius: 8px;
@@ -41,21 +41,21 @@ body {
 }
 
 .checkout-button:hover {
-  background-color: #ffbf00;
+  background-color: #0099cc; /* Darker blue */
   transform: scale(1.05);
 }
 
 /* Page Headings */
 h1, h2 {
   text-align: center;
-  color: #ff4500; /* Vibrant orange */
+  color: #0044cc; /* Rich Blue */
   font-weight: 600;
 }
 
 /* Buttons */
 button {
   padding: 12px 18px;
-  background-color: #ff4500; /* Deep orange */
+  background-color: #007BFF; /* Primary blue */
   color: white;
   font-weight: 500;
   border: none;
@@ -65,7 +65,7 @@ button {
 }
 
 button:hover {
-  background-color: #ff7f50;
+  background-color: #0056b3;
   transform: translateY(-2px);
 }
 
@@ -80,7 +80,7 @@ button:disabled {
   flex-direction: column;
   align-items: center;
   padding: 30px;
-  background-color: #ffffff;
+  background-color: #b3d9ff; /* Soft blue background */
   border-radius: 12px;
   box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1);
   margin: 40px auto;
@@ -98,7 +98,7 @@ button:disabled {
 .search-sort input,
 .search-sort select {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #1e90ff; /* Bright blue */
   border-radius: 6px;
   outline: none;
   transition: 0.3s;
@@ -106,10 +106,9 @@ button:disabled {
 
 .search-sort input:focus,
 .search-sort select:focus {
-  border-color: #ff4500;
-  box-shadow: 0px 0px 5px rgba(255, 69, 0, 0.5);
+  border-color: #0044cc;
+  box-shadow: 0px 0px 5px rgba(30, 144, 255, 0.5);
 }
-
 
 .product-list {
   display: flex;
@@ -118,16 +117,18 @@ button:disabled {
   gap: 25px;
 }
 
-
 .product-card {
   background: white;
   padding: 20px;
   border-radius: 12px;
-  width: 300px;
+  width: 280px;
   text-align: center;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
-  border-bottom: 5px solid #ff4500; 
+  border-bottom: 5px solid #00b0ff; /* Bright cyan for contrast */
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .product-card:hover {
@@ -136,10 +137,9 @@ button:disabled {
 }
 
 .product-card img {
-  width: 150px;
+  width: 130px;
   border-radius: 10px;
 }
-
 
 .checkout-page {
   max-width: 600px;
@@ -148,8 +148,10 @@ button:disabled {
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
 }
-
 
 .checkout-form {
   display: flex;
@@ -159,17 +161,18 @@ button:disabled {
 
 .checkout-form input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 12px;
+  border: 1px solid #00b0ff; /* Cyan */
   border-radius: 6px;
   transition: border 0.3s;
+  font-size: 18px; 
+  font-weight: bold;
 }
 
 .checkout-form input:focus {
-  border-color: #ff4500;
-  box-shadow: 0px 0px 5px rgba(255, 69, 0, 0.5);
+  border-color: #0044cc;
+  box-shadow: 0px 0px 5px rgba(30, 144, 255, 0.5);
 }
-
 
 .cart-items {
   display: flex;
@@ -189,7 +192,10 @@ button:disabled {
   background: white;
   box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
-  border-bottom: 4px solid #ffcc00; 
+  border-bottom: 4px solid #00b0ff; /* Cyan accent */
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .cart-item:hover {
@@ -202,16 +208,18 @@ button:disabled {
   border-radius: 8px;
 }
 
-
 .order-info {
-  background: #fff4e3;
+  background: #e6f7ff; /* Lighter blue */
   padding: 15px;
   border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  border-left: 5px solid #ff4500;
+  font-size: 18px;
+  font-weight: bold;
+  border-left: 5px solid #1e90ff; /* Vivid blue */
+  font-family: 'Arial', sans-serif;
 }
 
 .order-info p {
   margin: 8px 0;
+  font-size: 18px;
+  font-weight: bold;
 }
