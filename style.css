@@ -110,7 +110,7 @@ button:disabled {
   box-shadow: 0px 0px 5px rgba(255, 69, 0, 0.5);
 }
 
-/* Product List */
+
 .product-list {
   display: flex;
   flex-wrap: wrap;
@@ -118,7 +118,7 @@ button:disabled {
   gap: 25px;
 }
 
-/* Product Cards */
+
 .product-card {
   background: white;
   padding: 20px;
@@ -127,7 +127,7 @@ button:disabled {
   text-align: center;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
-  border-bottom: 5px solid #ff4500; /* Vibrant bottom border */
+  border-bottom: 5px solid #ff4500; 
 }
 
 .product-card:hover {
@@ -140,7 +140,7 @@ button:disabled {
   border-radius: 10px;
 }
 
-/* Checkout Page */
+
 .checkout-page {
   max-width: 600px;
   margin: 30px auto;
@@ -150,7 +150,7 @@ button:disabled {
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Checkout Form */
+
 .checkout-form {
   display: flex;
   flex-direction: column;
@@ -170,7 +170,7 @@ button:disabled {
   box-shadow: 0px 0px 5px rgba(255, 69, 0, 0.5);
 }
 
-/* Cart Items */
+
 .cart-items {
   display: flex;
   flex-wrap: wrap;
@@ -189,7 +189,7 @@ button:disabled {
   background: white;
   box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
-  border-bottom: 4px solid #ffcc00; /* Yellow accent */
+  border-bottom: 4px solid #ffcc00; 
 }
 
 .cart-item:hover {
@@ -202,7 +202,7 @@ button:disabled {
   border-radius: 8px;
 }
 
-/* Order Summary */
+
 .order-info {
   background: #fff4e3;
   padding: 15px;
