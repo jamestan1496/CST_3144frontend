@@ -3,8 +3,8 @@ let products = [
     {
     "id": 1,
     "title": "Arts and Crafts",
-    "location": "Arts and Crafts",
-    "price": 500,
+    "location": "Marina",
+    "price": 100,
     "image": "images/Arts.jpg",
     "Availability": 10,
           
@@ -13,8 +13,8 @@ let products = [
     {
     "id": 2,
     "title": "Music and Instruments",
-    "location": "Music and Instruments",
-    "price": 500,
+    "location": "Burj Khalifa",
+    "price": 200,
     "image": "images/Music.jpg",
     "Availability": 10,
     
@@ -23,8 +23,8 @@ let products = [
     {
     "id": 3,
     "title": "Sports and Fitness",
-    "location": "Sports and Fitness",
-    "price": 500,
+    "location": "Sports City",
+    "price": 300,
     "image": "images/Sports.jpg",
     "Availability": 10,
           
@@ -33,8 +33,8 @@ let products = [
     {
     "id": 4,
     "title": "Swimming Lessons",
-    "location": "Swimming Lessons",
-    "price": 500,
+    "location": "Jumeirah Lake",
+    "price": 400,
     "image": "images/Swimming.jpg",
     "Availability": 10,
      
@@ -43,7 +43,7 @@ let products = [
     {
     "id": 5,
     "title": "Performing Arts",
-    "location": "Performing Arts",
+    "location": "Global Village",
     "price": 500,
     "image": "images/Performing Arts.jpg",
     "Availability": 10,
@@ -52,8 +52,8 @@ let products = [
     {
     "id": 6,
     "title": "Martial Arts",
-    "location": "Martial Arts",
-    "price": 500,
+    "location": "Barsha Heights",
+    "price": 600,
     "image": "images/Martial arts.jpg",
     "Availability": 10,
        
@@ -62,8 +62,8 @@ let products = [
     {
     "id": 7,
     "title": "Culinary Arts",
-    "location": "Culinary Arts",
-    "price": 500,
+    "location": "Bur Dubai",
+    "price": 700,
     "image": "images/Culinary.jpg",
     "Availability": 10,
     
@@ -72,8 +72,8 @@ let products = [
     {
     "id": 8,
     "title": "Foreign Language",
-    "location": "Foreign Language",
-    "price": 500,
+    "location": "Knowledge Park",
+    "price": 800,
     "image": "images/Foreign.jpg",
     "Availability": 10,
        
@@ -82,8 +82,8 @@ let products = [
     {
     "id": 9,
     "title": "Math Lessons",
-    "location": "Math Lessons",
-    "price": 500,
+    "location": "Dubai Hills",
+    "price": 900,
     "image": "images/Math.jpg",
     "Availability": 10,
        
@@ -92,8 +92,8 @@ let products = [
     {
     "id": 10,
     "title": "Video Editing",
-    "location": "Video Editing",
-    "price": 500,
+    "location": "Media City",
+    "price": 1000,
     "image": "images/video.jpg",
     "Availability": 10,
          
