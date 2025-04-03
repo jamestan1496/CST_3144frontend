@@ -268,25 +268,24 @@
                         }
                     },
                     updateAvailability() {
-                        this.cart.forEach(product =>{
-                            const updateAvailability = product.Availability - 1;
-                            fetch('https://cst-3144backend.onrender.com/collection/Products/${product._id}',{
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json'},
-                                body: JSON.stringify({Availability:updateAvailability})
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.msg === 'success') {
-                                    console.log('Availability updated for $(product.title)');
-                                } else {
-                                    console.error('Failed to update Availability for ${product.title}:', data.error);
-                                }
-                            })
-                            .catch(error => console.error('Error updating Availability:', error));
-
-                        });
-                    }
+    this.cart.forEach(product => {
+        const updateAvailability = product.Availability - 1;
+        fetch(`https://cst-3144backend.onrender.com/collection/Products/${product._id}`, {  // Correct template literal
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ Availability: updateAvailability })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.msg === 'success') {
+                console.log(`Availability updated for ${product.title}`);
+            } else {
+                console.error(`Failed to update Availability for ${product.title}:`, data.error);
+            }
+        })
+        .catch(error => console.error('Error updating Availability:', error));
+    });
+}
 
             },
 
