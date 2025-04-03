@@ -191,18 +191,18 @@
         return;
     }
 
-    // Process cart to sum up spaces correctly
+    
     const cartSummary = this.cart.reduce((acc, product) => {
         const existingProduct = acc.find(item => item.id === product.id);
         if (existingProduct) {
-            existingProduct.space += 1; // Increase count for duplicate items
+            existingProduct.space += 1; 
         } else {
             acc.push({
                 id: product.id,
                 title: product.title,
                 price: product.price,
                 location: product.location,
-                space: 1 // First occurrence
+                space: 1 
             });
         }
         return acc;
@@ -220,7 +220,7 @@
     })
     .then(async (response) => {
         if (!response.ok) {
-            const errorText = await response.text(); // Get server error message
+            const errorText = await response.text(); 
             throw new Error(`Server error: ${errorText}`);
         }
         return response.json();
@@ -228,14 +228,14 @@
     .then(data => {
         console.log("Order successfully submitted:", data);
         alert("Order submitted successfully!");
-        this.updateSpaces();
+        this.updateAvailability();
         this.cart = [];
-        this.isHomePage = true;
+        this.HomePage = true;
     })
     .catch(error => console.error("Error submitting order:", error));
 },
                 canAddToCart(product) {
-                    return product.Availability > this.cartCount(product.id);
+                    return product.Availability > this.cartCount(product._id);
                 },
     
                 cartCount(id) {
@@ -267,8 +267,29 @@
                             this.errors.contact = '';
                         }
                     },
+                    updateAvailability() {
+                        this.cart.forEach(product =>{
+                            const updateAvailability = product.Availability - 1;
+                            fetch('https://cst-3144backend.onrender.com/collection/Products/${product._id}',{
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json'},
+                                body: JSON.stringify({Availability:updateAvailability})
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.msg === 'success') {
+                                    console.log('Availability updated for $(product.title)');
+                                } else {
+                                    console.error('Failed to update Availability for ${product.title}:', data.error);
+                                }
+                            })
+                            .catch(error => console.error('Error updating Availability:', error));
+
+                        });
+                    }
 
             },
+
             computed: {
                 cartItemCount() {
                     return this.cart.length;
