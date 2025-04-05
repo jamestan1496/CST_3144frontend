@@ -179,61 +179,68 @@
                 },
     
                 submitForm() {
-    if (!this.order.firstName.trim() || 
-        !this.order.lastName.trim() || 
-        !this.order.contact.trim()) {
-        alert("Please fill out all required fields.");
-        return;
-    }
-
-    if (this.cart.length === 0) {
-        alert("Your cart is empty. Add products before placing an order.");
-        return;
-    }
-
-    
-    const cartSummary = this.cart.reduce((acc, product) => {
-        const existingProduct = acc.find(item => item.id === product.id);
-        if (existingProduct) {
-            existingProduct.space += 1; 
-        } else {
-            acc.push({
-                id: product.id,
-                title: product.title,
-                price: product.price,
-                location: product.location,
-                space: 1 
-            });
-        }
-        return acc;
-    }, []);
-
-    fetch("https://cst-3144backend.onrender.com/collection/Customer", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-            firstName: this.order.firstName,
-            lastName: this.order.lastName,
-            contact: this.order.contact,
-            cart: cartSummary
-        })
-    })
-    .then(async (response) => {
-        if (!response.ok) {
-            const errorText = await response.text(); 
-            throw new Error(`Server error: ${errorText}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("Order successfully submitted:", data);
-        alert("Order submitted successfully!");
-        this.updateAvailability();
-        this.cart = [];
-        this.HomePage = true;
-    })
-    .catch(error => console.error("Error submitting order:", error));
-},
+                        if (!this.order.firstName.trim() ||
+                            !this.order.lastName.trim() ||
+                            !this.order.contact.trim()) {
+                                alert("Please fill out all required fields.");
+                        return;
+                        }
+                        // Process cart to sum upAvailabilitys correctly
+                        const cartSummary = this.cart.reduce((acc, product) => {
+                        const existingProduct = acc.find(item => item.id === product.id);
+                        if (existingProduct) {
+                            existingProduct.Availability += 1; // Increase count for duplicate items
+                        } else {
+                            acc.push({
+                                _id: product._id,  
+                                id: product.id,
+                                title: product.title,
+                                price: product.price,
+                                location: product.location,
+                               Availability: 1,
+                                Availablespace: product.Availability - 1,
+                            });
+                        }
+                        return acc;
+                        }, []);
+                        fetch('https://cst-3144backend.onrender.com/collection/Customer', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                            firstName: this.order.firstName,
+                            lastName: this.order.lastName,
+                            contact: this.order.contact,
+                            cart: cartSummary // Use processed cart summary
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert('Order submitted successfully!');
+                        this.updateAvailability(cartSummary);
+                        this.cart = [];
+                        this.isHomePage = true;
+                        })
+                        .catch(error => console.error('Error submitting order:', error));
+                    },
+                    updateAvailability(cartSummary) {
+                        cartSummary.forEach(product => {
+                            const updatedAvailability = product.Availability - product.Availability; // Deduct the correct number
+                            fetch(`https://cst-3144backend.onrender.com/collection/Products/${product._id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({Availability: updatedAvailability })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.msg === 'success') {
+                                    console.log(`Spaces updated for ${product.title}`);
+                                } else {
+                                    console.error(`Failed to updateAvailability for ${product.title}:`, data.error);
+                                }
+                            })
+                            .catch(error => console.error('Error updatingAvailability:', error));
+                        });
+                    },
                 canAddToCart(product) {
                     return product.Availability > this.cartCount(product._id);
                 },
@@ -270,7 +277,7 @@
                     updateAvailability() {
     this.cart.forEach(product => {
         const updateAvailability = product.Availability - 1;
-        fetch(`https://cst-3144backend.onrender.com/collection/Products/${product._id}`, {  // Correct template literal
+        fetch(`https://cst-3144backend.onrender.com/collection/Products/${product._id}`, {  
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ Availability: updateAvailability })
