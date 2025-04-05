@@ -141,27 +141,26 @@
                     }
                 },
                 async handleSearchQuery() {
-                    if (this.searchQuery.trim() === '') {
-                        await this.fetchProducts();
-                        return;
-                    }
+    if (this.searchQuery.trim() === '') {
+        await this.fetchProducts();  // If no search query, fetch all products
+        return;
+    }
 
-                    try {
-                        const url = `https://cst-3144backend.onrender.com/collection/Products/search?q=${encodeURIComponent(this.searchQuery)}`;
-                        const response = await fetch(url);
-                        if (!response.ok) throw new Error("Search request failed");
-                        const data = await response.json();
+    try {
+        // Ensure the URL is correct, especially the query parameter.
+        const url = `/collection/Products/search?q=${encodeURIComponent(this.searchQuery)}`;
+        console.log('Making request to:', url); // Debug the URL being called
+        const response = await fetch(url);
+        
+        if (!response.ok) throw new Error('Search request failed');
 
-                        this.products = data.map(product => {
-                            if (product.image && !product.image.startsWith('http')) {
-                                product.image = `https://cst-3144backendcw.onrender.com/images/${product.image.split("\\").pop()}`;
-                            }
-                            return product;
-                        });
-                    } catch (error) {
-                        console.error("Search error:", error);
-                    }
-                },
+        const data = await response.json();
+        this.products = data;  // Update products with search results
+    } catch (error) {
+        console.error('Search error:', error);
+    }
+},
+
                 goToHomePage() {
                     this.Homepage = true;
                     this.showProduct = true;
