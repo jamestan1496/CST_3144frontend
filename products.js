@@ -6,7 +6,7 @@ let products = [
     "location": "Marina",
     "price": 100,
     "image": "images/Arts.jpg",
-    "Availability": 10,
+    "Spaces": 10,
           
     },
 
@@ -16,7 +16,7 @@ let products = [
     "location": "Burj Khalifa",
     "price": 200,
     "image": "images/Music.jpg",
-    "Availability": 10,
+    "Spaces": 10,
     
     },
 
@@ -26,7 +26,7 @@ let products = [
     "location": "Sports City",
     "price": 300,
     "image": "images/Sports.jpg",
-    "Availability": 10,
+    "Spaces": 10,
           
     },
 
@@ -36,7 +36,7 @@ let products = [
     "location": "Jumeirah Lake",
     "price": 400,
     "image": "images/Swimming.jpg",
-    "Availability": 10,
+    "Spaces": 10,
      
     },
 
@@ -46,7 +46,7 @@ let products = [
     "location": "Global Village",
     "price": 500,
     "image": "images/Performing Arts.jpg",
-    "Availability": 10,
+    "Spaces": 10,
           
     },
     {
@@ -55,7 +55,7 @@ let products = [
     "location": "Barsha Heights",
     "price": 600,
     "image": "images/Martial arts.jpg",
-    "Availability": 10,
+    "Spaces": 10,
        
     },
 
@@ -65,7 +65,7 @@ let products = [
     "location": "Bur Dubai",
     "price": 700,
     "image": "images/Culinary.jpg",
-    "Availability": 10,
+    "Spaces": 10,
     
     },
 
@@ -75,7 +75,7 @@ let products = [
     "location": "Knowledge Park",
     "price": 800,
     "image": "images/Foreign.jpg",
-    "Availability": 10,
+    "Spaces": 10,
        
     },
 
@@ -85,7 +85,7 @@ let products = [
     "location": "Dubai Hills",
     "price": 900,
     "image": "images/Math.jpg",
-    "Availability": 10,
+    "Spaces": 10,
        
     },
 
@@ -95,7 +95,7 @@ let products = [
     "location": "Media City",
     "price": 1000,
     "image": "images/video.jpg",
-    "Availability": 10,
+    "Spaces": 10,
          
     }
     
