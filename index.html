@@ -6,7 +6,7 @@
     <title>After School Activities</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <link rel="stylesheet" href="style.css">
-    <script src="products.js"></script>
+    <!-- <script src="products.js"></script> -->
 </head>
 <body>
     <div id="app">
@@ -25,7 +25,7 @@
             <div v-else-if="!Homepage && showProduct" class="products-page">
                 <div class="search-sort">
                     <label for="search">Search:</label>
-                    <input v-model="searchQuery" id="search" type="text" placeholder="Search for activities..." />
+                    <input v-model="searchQuery" id="search" type="text" placeholder="Search for activities..." @input="fetchProducts"/>
                     <label for="sort-by">Sort By:</label>
                     <select v-model="sortCriteria" id="sort-by">
                         <option value="title-asc">Title (A-Z)</option>
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="product-list">
-                    <div v-for="product in filteredAndSortedProducts" :key="product.id" class="product-card">
+                    <div v-for="product in sortedProducts" :key="product.id" class="product-card">
                         <h2>{{ product.title }}</h2>
                         <figure>
                             <img :src="product.image" alt="Product Image" />
@@ -120,47 +120,29 @@
             mounted() {
                 this.fetchProducts();
             },
-            watch: {
-                searchQuery: 'handleSearchQuery'
-            },
             methods: {
                 async fetchProducts() {
-                    try {
-                        const url = "https://cst-3144backend.onrender.com/collection/Products";
-                        const response = await fetch(url);
-                        if (!response.ok) throw new Error("Failed to fetch products");
-                        const data = await response.json();
-                            this.products = data.map(product => {
-                                if (product.image && !product.image.startsWith('http')) {
-                                    product.image = `https://cst-3144backendcw.onrender.com/images/${product.image.split("\\").pop()}`;
-                                }
-                                return product;
-                            });
-                    } catch (error) {
-                        console.error("Error fetching products", error);
-                    }
-                },
-                async handleSearchQuery() {
-    if (this.searchQuery.trim() === '') {
-        await this.fetchProducts();  // If no search query, fetch all products
-        return;
-    }
-
     try {
-        // Ensure the URL is correct, especially the query parameter.
-        const url = `/collection/Products/search?q=${encodeURIComponent(this.searchQuery)}`;
-        console.log('Making request to:', url); // Debug the URL being called
-        const response = await fetch(url);
-        
-        if (!response.ok) throw new Error('Search request failed');
+      const baseUrl = "https://cst-3144backend.onrender.com";
+      const collectionName = "Products";
+      const url = this.searchQuery.trim()
+        ? `${baseUrl}/collection/${collectionName}/search?q=${encodeURIComponent(this.searchQuery)}`
+        : `${baseUrl}/collection/${collectionName}`;
 
-        const data = await response.json();
-        this.products = data;  // Update products with search results
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Failed to fetch products");
+
+      const data = await response.json();
+      this.products = data.map(product => {
+        if (product.image && !product.image.startsWith('http')) {
+          product.image = `https://cst3144backendcw.onrender.com/images/${product.image.split("\\").pop()}`;
+        }
+        return product;
+      });
     } catch (error) {
-        console.error('Search error:', error);
+      console.error("Error fetching products", error);
     }
-},
-
+  },
                 goToHomePage() {
                     this.Homepage = true;
                     this.showProduct = true;
@@ -187,6 +169,13 @@
                     this.Homepage = false;
                     this.showProduct = false;
                 },
+                removeFromCart(index) {
+    const removedItem = this.cart.splice(index, 1)[0]; // Remove item from cart
+    const productInStore = this.products.find(p => p.id === removedItem.id);
+    if (productInStore) {
+        productInStore.Spaces++; // Re-add the space to the original product
+    }
+},
                 submitForm() {
                     if (!this.order.firstName.trim() || !this.order.lastName.trim() || !this.order.contact.trim()) {
                         alert("Please fill out all required fields.");
@@ -208,14 +197,13 @@
                             });
                         }
                         return acc;
-                    }, []); 
-
+                    }, []);
                     console.log({
-                        firstName: this.order.firstName,
-                        lastName: this.order.lastName,
-                        contact: this.order.contact,
-                        cart: cartSummary
-                    });
+            firstName: this.order.firstName,
+            lastName: this.order.lastName,
+            contact: this.order.contact,
+            cart: cartSummary
+});
 
                     fetch('https://cst-3144backend.onrender.com/collection/Customer', {
                         method: 'POST',
@@ -227,45 +215,98 @@
                             cart: cartSummary
                         })
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            console.error('Error response from server:', response);
-                            throw new Error('Server error');
-                        }
-                        return response.json();
-                    })
+                    .then(async response => {
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || 'Server error');
+    }
+    return response.json();
+})
                     .then(data => {
                         alert('Order submitted successfully!');
-                        this.updateAvailability();
-                        this.resetCart();
+                        this.updateSpaces();
+                        this.cart = [];
+                        this.Homepage = true;
                     })
-                    .catch(error => console.error('Order submission error:', error));
-                },
-                updateAvailability() {
-                    this.cart.forEach(item => {
-                        let productInStore = this.products.find(p => p.id === item.id);
-                        if (productInStore) {
-                            productInStore.Spaces -= 1;
-                        }
+                    .catch(async (error) => {
+    const errMsg = await error?.response?.text?.() || error.message;
+    console.error('❌ Error submitting order:', errMsg);
+    alert('Order submission Failed: ' + errMsg);
+
                     });
                 },
-                resetCart() {
-                    this.cart = [];
-                    this.order.firstName = '';
-                    this.order.lastName = '';
-                    this.order.contact = '';
+                updateSpaces() {
+    const productCount = this.cart.reduce((acc, product) => {
+        if (!acc[product._id]) {
+            acc[product._id] = { ...product, count: 1 };
+        } else {
+            acc[product._id].count += 1;
+        }
+        return acc;
+    }, {});
+
+    const updatePromises = Object.values(productCount).map(item => {
+        const newSpaces = item.Spaces - item.count;
+        return fetch(`https://cst-3144backend.onrender.com/collection/Products/${item._id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ Spaces: newSpaces })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to update Spaces for ${item.title}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(`✅ Updated Spaces for ${item.title}`);
+        })
+        .catch(error => {
+            console.error(`❌ Error updating ${item.title}:`, error.message);
+        });
+    });
+
+    return Promise.all(updatePromises); // so you can await this
+},
+                canAddToCart(product) {
+                    return product.Spaces > this.cartCount(product._id);
                 },
                 cartCount(id) {
-                    return this.cart.filter(item => item.id === id).length;
+                    return this.cart.filter(item => item._id === id).length;
                 },
-                canAddToCart(product) {
-                    return product.Spaces - this.cartCount(product.id) > 0;
+                validateOrder() {
+                    if (!this.order.firstName.trim()) {
+                        this.errors.firstName = 'First Name is required.';
+                    } else if (/[^a-zA-Z]/.test(this.order.firstName)) {
+                        this.errors.firstName = 'Enter a valid First Name.';
+                        this.order.firstName = this.order.firstName.replace(/[^a-zA-Z]/g, '');
+                    } else {
+                        this.errors.firstName = '';
+                    }
+                    if (!this.order.lastName.trim()) {
+                        this.errors.lastName = 'Last Name is required.';
+                    } else if (/[^a-zA-Z]/.test(this.order.lastName)) {
+                        this.errors.lastName = 'Enter a valid Last Name.';
+                        this.order.lastName = this.order.lastName.replace(/[^a-zA-Z]/g, '');
+                    } else {
+                        this.errors.lastName = '';
+                    }
+                    this.order.contact = this.order.contact.replace(/\D/g, ''); 
+                    if (!this.order.contact) {
+                        this.errors.contact = 'Contact number is required.';
+                    } else if (this.order.contact.length < 10) {
+                        this.errors.contact = 'Contact number must be at least 10 digits.';
+                    } else {
+                        this.errors.contact = '';
+                    }
                 },
             },
             computed: {
-                filteredAndSortedProducts() {
+                cartItemCount() {
+                    return this.cart.length;
+                },
+                sortedProducts() {
                     let productsArray = this.products.slice(0);
-                    // sorting logic
                     if (this.sortCriteria === 'title-asc') return productsArray.sort((a, b) => a.title.localeCompare(b.title));
                     if (this.sortCriteria === 'title-desc') return productsArray.sort((a, b) => b.title.localeCompare(a.title));
                     if (this.sortCriteria === 'location-asc') return productsArray.sort((a, b) => a.location.localeCompare(b.location));
